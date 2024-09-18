@@ -1,0 +1,28 @@
+{
+    "TableName": "Yobikake",
+    "KeySchema": [
+        {
+            "KeyType": "HASH",
+            "AttributeName": "Ayobikakerareru"
+        },
+        {
+            "KeyType": "RANGE",
+            "AttributeName": "Atimestamp"
+        }
+
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "Ayobikakerareru",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "Atimestamp",
+            "AttributeType": "N"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "WriteCapacityUnits": 1,
+        "ReadCapacityUnits": 1
+    }
+}

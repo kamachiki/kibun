@@ -1,0 +1,32 @@
+{
+  "version": "2.0",
+  "app_name": "hobopy-backend",
+  "api_gateway_stage": "api",
+  "stages": {
+    "dev": {
+      "environment_variables": {
+        "DB_ENDPOINT": "http://127.0.0.1:8001",
+        "DB_TABLE_NAME": "Todos",
+        "DB_TABLE_USER": "Users",
+        "DB_TABLE_USER_SESSION": "User_Session",
+        "DB_TABLE_KIBUN": "Kibun",
+        "DB_TABLE_YOBIKAKE": "Yobikake",
+        "DB_TABLE_GOAL": "Goal",
+        "DB_TABLE_KodomoToOtona": "KodomoToOtona",
+        "DB_TABLE_COMMENT": "Comment"
+      }
+    },
+    "prod": {
+      "autogen_policy": false,
+      "environment_variables": {
+        "DB_TABLE_NAME": "Todos",
+        "DB_TABLE_USER": "Users",
+        "DB_TABLE_USER_SESSION": "User_Session",
+        "DB_TABLE_KIBUN": "Kibun",
+        "DB_TABLE_YOBIKAKE":"Yobikake",
+        "DB_TABLE_GOAL": "Goal",
+        "DB_TABLE_COMMENT": "Comment"
+      }
+    }
+  }
+}

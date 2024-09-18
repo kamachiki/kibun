@@ -1,0 +1,219 @@
+{
+    "Kibun":
+    [
+        {
+            "PutRequest":{
+                "Item":{
+                    "Achild_id":{
+                        "S": "20240801123129"
+                    },
+                    "Atimestamp":{
+                        "N": "1724841620"
+                    },
+                    "Aface":{
+                        "N": "1"
+                    },
+                    "Atype":{
+                        "S": "face"
+                    },
+                    "Areason":{
+                        "S": "まきちゃんとあそんだ。"
+                    },
+                    "Akokai":{
+                        "BOOL": false
+                    },
+                    "Auser_id":{
+                        "S":"tichan"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest":{
+                "Item":{
+                    "Achild_id":{
+                        "S": "20240802123129"
+                    },
+                    "Atimestamp":{
+                        "N": "1724841622"
+                    },
+                    "Aface":{
+                        "N": "2"
+                    },
+                    "Atype":{
+                        "S": "moon"
+                    },
+                    "Areason":{
+                        "S": "おきちゃんとけんかした。"
+                    },
+                    "Akokai":{
+                        "BOOL": true
+                    }
+                }
+            }
+        }
+    ],
+    "Users": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {
+                        "S": "chikiri"
+                    },
+                    "Aname": {
+                        "S": "かまだちきり"
+                    },
+                    "Apassword": {
+                        "S": "okiho"
+                    },
+                    "Agakunen": {
+                        "N": "3"
+                    },
+                    "Atype": {
+                        "S": "child"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {
+                        "S": "asako"
+                    },
+                    "Aname": {
+                        "S": "かまだあさこ"
+                    },
+                    "Apassword": {
+                        "S": "takeaki"
+                    },
+                    "Amail-address": {
+                        "S": "aaa.com"
+                    },
+                    "Atype": {
+                        "S": "adult"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {
+                        "S": "tichan"
+                    },
+                    "Aname": {
+                        "S":"ちいちゃん"
+                    },
+                    "Apassword": {
+                        "S": "2022316"
+                    },
+                    "Agakunen": {
+                        "N": "5"
+                    },
+                    "Atype":{
+                        "S":"child"
+                    
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {
+                        "S": "super_chikiri"
+                    },
+                    "Aname": {
+                        "S":"管理者"
+                    },
+                    "Apassword": {
+                        "S": "XelmdAsleqDE"
+                    },
+                    "Atype":{
+                        "S":"admin"
+                    }
+                }
+            }
+        }
+    ],
+    "Yobikake":[
+        {
+            "PutRequest":{
+                "Item":{
+                    "Achild_id":{
+                        "S":"makina"
+                    },
+                    "Aadult_id":{
+                        "S":"asako"
+                    },
+                    "Atimestamp":{
+                        "N":"1724841624"
+                    },
+                    "Atype":{
+                        "S":"イライラしている"
+                    },
+                    "Ayobikake":{
+                        "S":"深呼吸して落ち着いてみたらいいんじゃない？"
+                    }
+                }
+            }
+        }
+    ],
+    "Comment":[
+        {
+            "PutRequest":{
+                "Item":{
+                    
+                    "Aadult_id":{
+                        "S":"asako"
+                    },
+                    "Achild_id":{
+                        "S":"chikiri"
+                    },
+                    "Atimestamp":{
+                        "N":"1724841624"
+                    },
+                    "Acommment":{
+                        "S":"今週も頑張ったね！"
+                    }
+                }
+            }
+        }
+    ],
+    "Goal":[
+        {
+            "PutRequest":{
+            "Item":{
+                "Atimestamp":{
+                    "N": "1724841620"
+                },
+                "Achild_id":{
+                    "S":"chikiri"
+                },
+                "Agoal":{
+                    "S":"来週からも、たくさんのことに挑戦して、笑顔になりたいです."
+                }
+            }
+        }
+    }
+    ],
+    "User_Session":
+    [
+        {
+            "PutRequest":{
+                "Item":{
+                    "id":{
+                        "S": "20240801123129"
+                    },
+                    "Auser_id":{
+                        "S": "chikiri"
+                    },
+                    "Atimestamp":{
+                        "N": "1724841620"
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "TableName": "Goal",
+    "KeySchema": [
+        {
+            "KeyType": "HASH",
+            "AttributeName": "Achild_id"
+        },
+        {
+            "KeyType": "RANGE",
+            "AttributeName": "Atimestamp"
+        }
+
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "Achild_id",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "Atimestamp",
+            "AttributeType": "N"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "WriteCapacityUnits": 1,
+        "ReadCapacityUnits": 1
+    }
+}
