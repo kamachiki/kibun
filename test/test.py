@@ -10,7 +10,8 @@ def save_dynamodb_table_to_csv(table_name, csv_file_name):
         csv_file_name (str): 保存するCSVファイル名
     """
 
-    dynamodb = boto3.resource('dynamodb')
+    dynamodb = boto3.resource('dynamodb', endpoint_url="http://127.0.0.1:8001")
+    #dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(table_name)
 
     # テーブル全体のスキャンを実行
