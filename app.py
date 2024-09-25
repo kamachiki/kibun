@@ -1,8 +1,9 @@
 from chalice import Chalice, NotFoundError,BadRequestError, ConflictError,UnauthorizedError
 from chalicelib import database
-from datetime import datetime
+from datetime import datetime,timedelta
 from urllib.parse import unquote
 from functools import reduce
+
 
 
 app = Chalice(app_name='hobopy-backend')
@@ -20,7 +21,7 @@ def login_user():
 
     if user["Apassword"]==changes["Apassword"]:
         session = database.create_session(user)
-        return _changeTimestamp(session)
+        return session
     else:
         return False
 
@@ -56,13 +57,11 @@ def _checkKodomoToOtona(child_id,adult_id):
 
 def _changeTimestamp(keyname,data):
     if keyname in data:
-        data[keyname] = datetime.fromtimestamp(float(data[keyname])).strftime("%Y%m%d%H%M")
+        data[keyname+ "_date"] = datetime.fromtimestamp(float(data[keyname])).strftime("%Y%m%d%H%M")
     return data
 
-def _changeListTimestamp(keyname,list):
-    return list(map(lambda x: _changeTimestamp(keyname,x), list))
-
-
+def _changeListTimestamp(keyname,datalist):
+    return list(map(lambda x: _changeTimestamp(keyname,x), datalist))
 
 #ユーザーを作る、IDはかぶってはいけない
 @app.route('/users', methods=['POST'], cors=True)
@@ -83,16 +82,17 @@ def create_kibun():
     return _changeTimestamp("Atimestamp",database.create_kibun(kibun,session["user"]["id"]))
 
 #大人が子供の気分のデータをとってくる、または、公開されている気分のデータをとる
-#mae:20240301
-#ushiro:20240401
-@app.route('/kibuns/{child_id}/{mae}/{ushiro}',methods=['GET'],cors=True)
-def get_kibuns(child_id,mae,ushiro):
+#mae:7 (何日前か)
+@app.route('/kibuns/{child_id}/{mae}',methods=['GET'],cors=True)
+def get_kibuns(child_id,mae):
     child_id = unquote(child_id)
     session = _login_check()
     kokai = True
     if child_id == session['user']["id"] or (session['user']['Atype'] == 'adult' and _checkKodomoToOtona(child_id,session["user"]["id"])):
         kokai = False
-    return _changeListTimestamp("Atimestamp",database.get_kibuns(child_id,datetime.strptime(mae, '%Y%m%d'),datetime.strptime(ushiro, '%Y%m%d'),kokai))
+    now = datetime.now()
+    ago = now - timedelta(days=int(mae))
+    return _changeListTimestamp("Atimestamp",database.get_kibuns(child_id,ago,now,kokai))
 
 #大人と子供のデータを作成する
 @app.route('/kodomotootonas', methods=['POST'], cors=True)
@@ -123,12 +123,26 @@ def create_yobikake():
     return _changeTimestamp("Atimestamp",database.create_yobikake(kibun,session["user"]["id"]))
 
 #子供への呼びかけのデータをとる
-#mae:20240301
-#ushiro:20240401
-@app.route('/yobikakes/{mae}/{ushiro}',methods=['GET'],cors=True)
-def get_yobikakes(mae,ushiro):
+#kibun_timestamp：該当する気分
+@app.route('/yobikakes/{child_id}/{kibun_timestamp}',methods=['GET'],cors=True)
+def get_yobikakes(child_id,kibun_timestamp):
     session = _login_check()
-    return _changeListTimestamp("Atimestamp",database.get_yobikakes(session["user"]["id"],datetime.strptime(mae, '%Y%m%d'),datetime.strptime(ushiro, '%Y%m%d')))
+    child_id = unquote(child_id)
+
+    if child_id == session["user"]["id"]:
+        kokai = False
+    else:
+        kokai = True
+    return _changeListTimestamp("Atimestamp",database.get_yobikakesForKibun(child_id,kibun_timestamp,kokai))
+
+#自分への呼びかけのデータをとる
+@app.route('/myyobikakes/{mae}',methods=['GET'],cors=True)
+def get_yobikakes(mae):
+    session = _login_check()
+    now = datetime.now()
+    ago = now - timedelta(days=int(mae))
+    return _changeListTimestamp("Atimestamp",database.get_yobikakes(session["user"]["id"],ago,now))
+
 
 #よびかけを消す
 #@app.route('/yobikake/{child_id}/{timestamp}', methods=['DELETE'], cors=True)
@@ -146,15 +160,17 @@ def create_goal():
     return _changeTimestamp("Atimestamp",database.create_goal(app.current_request.json_body,session["user"]["id"]))
 
 #子供の目標のデータをとる
-#mae:20240301
-#ushiro:20240401
-@app.route('/goals/{child_id}/{mae}/{ushiro}',methods=['GET'],cors=True)
-def get_goals(child_id,mae,ushiro):
+#mae:7 (何日前か)
+@app.route('/goals/{child_id}/{mae}',methods=['GET'],cors=True)
+def get_goals(child_id,mae):
     
     child_id = unquote(child_id)
     session = _login_check()
+    
     if session['user']['Atype'] == 'adult' and _checkKodomoToOtona(child_id,session["user"]["id"]):
-        return _changeListTimestamp( "Atimestamp", database.get_kibuns(child_id,datetime.strptime(mae, '%Y%m%d'),datetime.strptime(ushiro, '%Y%m%d'),False))
+        now = datetime.now()
+        ago = now - timedelta(days=int(mae))
+        return _changeListTimestamp( "Atimestamp", database.get_kibuns(child_id,ago,now,False))
     else:
         return []
 
@@ -170,15 +186,14 @@ def create_comment():
     return _changeTimestamp("Atimestamp", database.create_comment(app.current_request.json_body,session["user"]))
 
 #大人が子供へのコメントのデータをとる
-#mae:20240301
-#ushiro:20240401
-@app.route('/comments/{child_id}/{mae}/{ushiro}',methods=['GET'],cors=True)
-def get_comments(mae,ushiro):
+#mae:7 (何日前か)
+@app.route('/comments/{child_id}/{mae}',methods=['GET'],cors=True)
+def get_comments(child_id,mae):
     child_id = unquote(child_id)
     session = _login_check()
-    if session['user']['Atype'] != 'adult':
-        raise BadRequestError("adult only")
-    return _changeListTimestamp( "Atimestamp",database.get_comments(session["user"]["id"],datetime.strptime(mae, '%Y%m%d'),datetime.strptime(ushiro, '%Y%m%d')))
+    now = datetime.now()
+    ago = now - timedelta(days=int(mae))
+    return _changeListTimestamp( "Atimestamp",database.get_comments(child_id,ago,now))
 
 #コメントを消す
 #@app.route('/comments/{child_id}/{timestamp}', methods=['DELETE'], cors=True)

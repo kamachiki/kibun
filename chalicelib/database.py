@@ -4,8 +4,8 @@ import uuid
 import boto3.dynamodb
 from boto3.dynamodb.conditions import Key, Attr
 from datetime import *
-from decimal import *
 import html
+import math
 
 import boto3.dynamodb.conditions
 
@@ -28,7 +28,7 @@ def create_session(user):
     item = {
         "id":  uuid.uuid4().hex,
         "Auser_id": user["id"],
-        "Atimestamp": Decimal(str(datetime.now().timestamp()))
+        "Atimestamp": int(datetime.now().timestamp())
     }
     table = _get_database().Table(os.environ['DB_TABLE_USER_SESSION'])
     table.put_item(Item=item)
@@ -42,7 +42,7 @@ def cleanup_session(before):
     response = table.scan(
         FilterExpression='Atimestamp < :target_date',  # 作成日時が対象日時より前のデータをフィルタ
         ExpressionAttributeValues={
-            ':target_date': Decimal( str(before.timestamp()) ) # Unixタイムスタンプに変換
+            ':target_date': int( before.timestamp() ) # Unixタイムスタンプに変換
         }
     )
 
@@ -109,16 +109,24 @@ def create_user(user):
 def _get_lists(query_name,user_id,mae,ushiro,tablename):
     table = _get_database().Table(os.environ[tablename])
 
-    keyp =Key(query_name).eq(user_id) & Key('Atimestamp').between(Decimal(str(mae.timestamp())), Decimal(str(ushiro.timestamp())))
+
+    #keye = query_name + ' = :pk_value AND Atimestamp BETWEEN :start AND :end' 
+    #keyp = {':pk_value': user_id,
+    #        ':start': int(mae.timestamp()),
+    #        ':end': int(ushiro.timestamp())}
+    
+    keyp =Key(query_name).eq(user_id) & Key('Atimestamp').between(int(mae.timestamp()), int(ushiro.timestamp()))
 
     # スキャンして期間内のデータを列挙
-    response = table.query(KeyConditionExpression = keyp)
+    response = table.query(
+        KeyConditionExpression=  keyp
+    )
     items = response['Items']
     # データが多い場合は、LastEvaluatedKeyを使って続きを取得
     while 'LastEvaluatedKey' in response:
         response = table.query(
             ExclusiveStartKey=response['LastEvaluatedKey'],
-            KeyConditionExpression = keyp
+            KeyConditionExpression= keyp
             )
         items.extend(response['Items'])
     return items
@@ -126,10 +134,10 @@ def _get_lists(query_name,user_id,mae,ushiro,tablename):
 #よびかけの記録をつくる
 def create_yobikake(yobikake_data,user_id):
     item ={
-        'Atimestamp':Decimal(str(datetime.now().timestamp())),
+        'Atimestamp':int(datetime.now().timestamp()),
         'Ayobikakeru':user_id,
         'Ayobikakerareru':yobikake_data["Ayobikakerareru"],
-        'Akibun_timestamp':yobikake_data['Akibun_timestamp'],
+        'Akibun_timestamp':int(yobikake_data['Akibun_timestamp']),
         'Ayobikake':html.escape(yobikake_data['Ayobikake']),
         'Akokai':yobikake_data['Akokai']
     }
@@ -140,13 +148,12 @@ def create_yobikake(yobikake_data,user_id):
 #気分の記録をつくる
 def create_kibun(kibun,child_id):
     item ={
-        'Atimestamp':Decimal(str(datetime.now().timestamp())),
+        'Atimestamp':math.floor(datetime.now().timestamp()),
         'Aface':kibun['Aface'],
         'Atype':kibun['Atype'],
         'Areason':html.escape(kibun['Areason']),
         'Akokai':bool(kibun['Akokai']),
         'Achild_id':child_id
-
     }
     table = _get_database().Table(os.environ['DB_TABLE_KIBUN'])
     table.put_item(Item=item)
@@ -155,7 +162,7 @@ def create_kibun(kibun,child_id):
 #goalの記録をつくる
 def create_goal(goal,child_id):
     item ={
-        'Atimestamp':Decimal(str(datetime.now().timestamp())),
+        'Atimestamp':int(datetime.now().timestamp()),
         'Achild_id':child_id,
         'Agoal':html.escape(goal['Agoal'])
     }
@@ -165,7 +172,7 @@ def create_goal(goal,child_id):
 #commentの記録をつくる
 def create_comment(comment,adult_id):
     item ={
-        'Atimestamp':Decimal(str(datetime.now().timestamp())),
+        'Atimestamp':int(datetime.now().timestamp()),
         'Achild_id':comment['Achild_id'],
         'Aadult_id':adult_id,
         'Acomment':html.escape(comment['Acomment'])
@@ -213,8 +220,32 @@ def get_kodomoToOtona(child_id):
 #maeからushiroの間の気分をとりだす。それぞれdatetime型
 def get_kibuns(child_id,mae,ushiro,kokai):
     table = _get_database().Table(os.environ['DB_TABLE_KIBUN'])
+    return _get_kokai(table,'Achild_id',child_id,mae,ushiro,kokai)
+
+def get_yobikakesForKibun(child_id,kibun_timestamp,kokai):
+    table = _get_database().Table(os.environ['DB_TABLE_YOBIKAKE'])
+
     # スキャンして期間内のデータを列挙
-    keyp =Key('Achild_id').eq(child_id) & Key('Atimestamp').between(Decimal(str(mae.timestamp())), Decimal(str(ushiro.timestamp())))
+    keyp =Key('Ayobikakerareru').eq(child_id) 
+    if kokai:
+        response = table.query(
+            KeyConditionExpression = keyp,
+            FilterExpression=Attr('Akokai').eq(True) & Attr("Akibun_timestamp").eq(kibun_timestamp)
+        )
+    else:
+        response = table.query(
+            KeyConditionExpression = keyp,
+            FilterExpression=Attr("Akibun_timestamp").eq(kibun_timestamp)
+        )
+    items = response['Items']
+    return items
+
+
+
+
+def _get_kokai(table,id_name,child_id,mae,ushiro,kokai):
+    # スキャンして期間内のデータを列挙
+    keyp =Key(id_name).eq(child_id) & Key('Atimestamp').between(int(mae.timestamp()), int(ushiro.timestamp()))
 
     if kokai:
         response = table.query(
