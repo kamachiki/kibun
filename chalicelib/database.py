@@ -216,6 +216,15 @@ def get_kodomoToOtona(child_id):
     items = response['Items']
     return items
 
+#子供のIDから大人を取り出す
+def get_otonaToKodomo(adult_id):
+    table=_get_database().Table(os.environ['DB_TABLE_KodomoToOtona'])
+    response = table.query(
+        KeyConditionExpression=Key('Aadult_id').eq(adult_id)
+    )
+    items = response['Items']
+    return items
+
 
 #maeからushiroの間の気分をとりだす。それぞれdatetime型
 def get_kibuns(child_id,mae,ushiro,kokai):

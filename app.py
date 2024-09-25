@@ -106,6 +106,12 @@ def create_kodomotootona():
 def get_kodomotootonas():
     session = _login_check()
     return database.get_kodomoToOtona(session["user"]["id"])
+
+#大人が、自分を指定した子供のリストを取る
+@app.route('/otonatokodomos',methods=['GET'],cors=True)
+def get_kodomotootonas():
+    session = _login_check()
+    return database.get_otonaToKodomo(session["user"]["id"])
    
 
 #大人と子供のデータを消す
