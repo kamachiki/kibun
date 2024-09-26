@@ -1,13 +1,14 @@
 {
     "TableName": "OtonaToKodomo",
     "KeySchema": [
-        {
-            "KeyType": "RANGE",
-            "AttributeName": "Achild_id"
-        },
+        
         {
             "KeyType": "HASH",
             "AttributeName": "Aadult_id"
+        },
+        {
+            "KeyType": "RANGE",
+            "AttributeName": "Achild_id"
         }
     ],
     "AttributeDefinitions": [
