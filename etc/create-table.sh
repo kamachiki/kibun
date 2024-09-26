@@ -5,3 +5,4 @@ aws dynamodb create-table --cli-input-json file://schema_goal.json
 aws dynamodb create-table --cli-input-json file://schema_yobikake.json
 aws dynamodb create-table --cli-input-json file://schema_kibun.json
 aws dynamodb create-table --cli-input-json file://schema_kodomotootona.json
+aws dynamodb create-table --cli-input-json file://schema_otonatokodomo.json

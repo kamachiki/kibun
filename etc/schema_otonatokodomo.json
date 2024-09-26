@@ -1,0 +1,27 @@
+{
+    "TableName": "OtonaToKodomo",
+    "KeySchema": [
+        {
+            "KeyType": "RANGE",
+            "AttributeName": "Achild_id"
+        },
+        {
+            "KeyType": "HASH",
+            "AttributeName": "Aadult_id"
+        }
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "Achild_id",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "Aadult_id",
+            "AttributeType": "S"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "WriteCapacityUnits": 1,
+        "ReadCapacityUnits": 1
+    }
+}

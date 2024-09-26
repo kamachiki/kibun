@@ -189,10 +189,23 @@ def create_kodomotootona(kodomotootona,child_id):
     }
     table = _get_database().Table(os.environ['DB_TABLE_KodomoToOtona'])
     table.put_item(Item=item)
+
+    table = _get_database().Table(os.environ['DB_TABLE_OtonaToKodomo'])
+    table.put_item(Item=item)
     return item
 
 #子供と大人の記録を消す
 def delete_kodomoToOtona(child_id,adult_id):
+    table = _get_database().Table(os.environ['DB_TABLE_OtonaToKodomo'])
+    response = table.delete_item(
+
+        Key={
+            "Achild_id":child_id,
+            "Aadult_id":adult_id
+        },
+        ReturnValues='ALL_OLD'
+    )
+
     table = _get_database().Table(os.environ['DB_TABLE_KodomoToOtona'])
     response = table.delete_item(
 
@@ -202,6 +215,8 @@ def delete_kodomoToOtona(child_id,adult_id):
         },
         ReturnValues='ALL_OLD'
     )
+
+
     if 'Attributes' in response:
         return response['Attributes']
     else:
@@ -218,7 +233,7 @@ def get_kodomoToOtona(child_id):
 
 #子供のIDから大人を取り出す
 def get_otonaToKodomo(adult_id):
-    table=_get_database().Table(os.environ['DB_TABLE_KodomoToOtona'])
+    table=_get_database().Table(os.environ['DB_TABLE_OtonaToKodomo'])
     response = table.query(
         KeyConditionExpression=Key('Aadult_id').eq(adult_id)
     )
