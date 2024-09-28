@@ -60,10 +60,11 @@ save_dynamodb_table_to_csv("Comment","comment.csv")
 save_dynamodb_table_to_csv("Kibun","kibun.csv")
 table = dynamodb.Table("Yobikake")
 keyp =Key("Ayobikakerareru").eq("ちいちゃん") #& Key('Atimestamp').between(Decimal(str(1726827119.491559)), Decimal(str(1726927119.491559)))
-
+fe =Attr("Akibun_timestamp").eq("1727483414")
 # スキャンして期間内のデータを列挙
-response = table.query(KeyConditionExpression = keyp)
+response = table.query(KeyConditionExpression = keyp,FilterExpression=fe)
 data = response['Items']
 write_csv("yobikake_between.csv",data,"Yobikake")
+
 
 print("全て終了")
