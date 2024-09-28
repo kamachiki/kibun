@@ -109,7 +109,7 @@ def get_kodomotootonas():
 
 #大人が、自分を指定した子供のリストを取る
 @app.route('/otonatokodomos',methods=['GET'],cors=True)
-def get_kodomotootonas():
+def get_otonaToKodomos():
     session = _login_check()
     return database.get_otonaToKodomo(session["user"]["id"])
    
@@ -135,11 +135,7 @@ def get_yobikakes(child_id,kibun_timestamp):
     session = _login_check()
     child_id = unquote(child_id)
 
-    if child_id == session["user"]["id"]:
-        kokai = False
-    else:
-        kokai = True
-    return _changeListTimestamp("Atimestamp",database.get_yobikakesForKibun(child_id,kibun_timestamp,kokai))
+    return _changeListTimestamp("Atimestamp",database.get_yobikakesForKibun(child_id,kibun_timestamp,True))
 
 #自分への呼びかけのデータをとる
 @app.route('/myyobikakes/{mae}',methods=['GET'],cors=True)
@@ -176,7 +172,7 @@ def get_goals(child_id,mae):
     if session['user']['Atype'] == 'adult' and _checkKodomoToOtona(child_id,session["user"]["id"]):
         now = datetime.now()
         ago = now - timedelta(days=int(mae))
-        return _changeListTimestamp( "Atimestamp", database.get_kibuns(child_id,ago,now,False))
+        return _changeListTimestamp( "Atimestamp", database.get_goals(child_id,ago,now))
     else:
         return []
 

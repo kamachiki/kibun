@@ -139,7 +139,9 @@ def create_yobikake(yobikake_data,user_id):
         'Ayobikakerareru':yobikake_data["Ayobikakerareru"],
         'Akibun_timestamp':int(yobikake_data['Akibun_timestamp']),
         'Ayobikake':html.escape(yobikake_data['Ayobikake']),
-        'Akokai':yobikake_data['Akokai']
+        'Akibun':yobikake_data['Akibun'],
+        'Akokai':yobikake_data['Akokai'],
+        'Areason':yobikake_data['Areason'],
     }
     table = _get_database().Table(os.environ['DB_TABLE_YOBIKAKE'])
     table.put_item(Item=item)
@@ -177,7 +179,7 @@ def create_comment(comment,adult_id):
         'Aadult_id':adult_id,
         'Acomment':html.escape(comment['Acomment'])
     }
-    table = _get_database().Table(os.environ['DB_TABLE_GOAL'])
+    table = _get_database().Table(os.environ['DB_TABLE_COMMENT'])
     table.put_item(Item=item)
     return item   
 
@@ -216,7 +218,6 @@ def delete_kodomoToOtona(child_id,adult_id):
         ReturnValues='ALL_OLD'
     )
 
-
     if 'Attributes' in response:
         return response['Attributes']
     else:
@@ -254,12 +255,13 @@ def get_yobikakesForKibun(child_id,kibun_timestamp,kokai):
     if kokai:
         response = table.query(
             KeyConditionExpression = keyp,
-            FilterExpression=Attr('Akokai').eq(True) & Attr("Akibun_timestamp").eq(kibun_timestamp)
+            #FilterExpression=Attr('Akokai').eq(True) & Attr("Akibun_timestamp").eq(kibun_timestamp)
+            #FilterExpression=Attr("Akibun_timestamp").eq(kibun_timestamp)
         )
     else:
         response = table.query(
             KeyConditionExpression = keyp,
-            FilterExpression=Attr("Akibun_timestamp").eq(kibun_timestamp)
+            #FilterExpression=Attr("Akibun_timestamp").eq(kibun_timestamp)
         )
     items = response['Items']
     return items

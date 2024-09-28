@@ -55,6 +55,7 @@ def write_csv(csv_file_name,data,table_name):
 
 save_dynamodb_table_to_csv("Yobikake","yobikake.csv")
 save_dynamodb_table_to_csv("Users","user.csv")
+save_dynamodb_table_to_csv("Comment","comment.csv")
 
 save_dynamodb_table_to_csv("Kibun","kibun.csv")
 table = dynamodb.Table("Yobikake")
