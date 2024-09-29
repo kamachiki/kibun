@@ -1,7 +1,7 @@
-# kibun インストール方法
+# ここみる(kibun) インストール方法
 
 #　フロントエンドのインストール方法
-* https\://snap.berkeley.edu/snap/snap.htmlを開き、kibun.xmlを開く
+* https://snap.berkeley.edu/snap/snap.html を開き、kibun.xmlを開く
 初期状態では、AWSにデプロイされたバックエンドと通信します。
 
 * バックエンドを下記の方法で設定した場合、バックエンドのエンドポイントURLを、「初めの画面」のステージのスクリプトのURLに設定してください。
@@ -10,6 +10,7 @@
 # バックエンドのインストール方法
 * python3をインストールする
 * openjdkをインストールする
+* git bashをインストールする
 * pip install awscli --upgrade --user でawscliをインストールする
 * AWSのAccess Key IDとSecret access keyを入手する（権限はAdministratorAccess
 * aws configureコマンドで上記を設定する
