@@ -1,5 +1,10 @@
 # ここみる（kibun) インストール方法
 
+#ライブデモ
+インストール済みのものは
+https://y.knsn.cc/snap/snap.html#present:Username=tichan&ProjectName=kokomiru
+こちらから見ることができます。
+
 #　フロントエンドのインストール方法
 * https\://snap.berkeley.edu/snap/snap.html
 を開き、kokomiru.xmlを開く
