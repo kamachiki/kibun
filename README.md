@@ -1,11 +1,11 @@
-# ここみる(kibun) インストール方法
+# ここみる（kibun) インストール方法
 
 #　フロントエンドのインストール方法
-* https://snap.berkeley.edu/snap/snap.html を開き、kibun.xmlを開く
-初期状態では、AWSにデプロイされたバックエンドと通信します。
+* https\://snap.berkeley.edu/snap/snap.html
+を開き、kokomiru.xmlを開く
+初期状態では、既にAWSにデプロイされたバックエンドと通信します。
 
 * バックエンドを下記の方法で設定した場合、バックエンドのエンドポイントURLを、「初めの画面」のステージのスクリプトのURLに設定してください。
-
 
 # バックエンドのインストール方法
 * python3をインストールする
