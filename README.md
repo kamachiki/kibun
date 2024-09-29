@@ -10,6 +10,7 @@
 # バックエンドのインストール方法
 * python3をインストールする
 * openjdkをインストールする
+* git bashをインストールする
 * pip install awscli --upgrade --user でawscliをインストールする
 * AWSのAccess Key IDとSecret access keyを入手する（権限はAdministratorAccess
 * aws configureコマンドで上記を設定する

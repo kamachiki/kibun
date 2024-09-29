@@ -19,7 +19,6 @@
     "prod": {
       "autogen_policy": false,
       "environment_variables": {
-        "DB_ENDPOINT": "http://127.0.0.1:8001",
         "DB_TABLE_USER": "Users",
         "DB_TABLE_USER_SESSION": "User_Session",
         "DB_TABLE_KIBUN": "Kibun",
