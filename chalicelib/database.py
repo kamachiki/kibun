@@ -97,7 +97,7 @@ def create_user(user):
                 'id':user['id'],
                 'Apassword':user['Apassword'],
                 'Amail-address':user['Amail-address'],
-                'Atype':"adult"
+                'Atype':"adult",
             }
         table = _get_database().Table(os.environ['DB_TABLE_USER'])
         table.put_item(Item=item)
@@ -255,13 +255,13 @@ def get_yobikakesForKibun(child_id,kibun_timestamp,kokai):
     if kokai:
         response = table.query(
             KeyConditionExpression = keyp,
-            #FilterExpression=Attr('Akokai').eq(True) & Attr("Akibun_timestamp").eq(kibun_timestamp)
-            #FilterExpression=Attr("Akibun_timestamp").eq(kibun_timestamp)
+            FilterExpression=Attr('Akokai').eq(True) & Attr("Akibun_timestamp").eq(int(kibun_timestamp))
+            #FilterExpression=Attr("Akibun_timestamp").eq(int(kibun_timestamp))
         )
     else:
         response = table.query(
             KeyConditionExpression = keyp,
-            #FilterExpression=Attr("Akibun_timestamp").eq(kibun_timestamp)
+            FilterExpression=Attr("Akibun_timestamp").eq(int(kibun_timestamp))
         )
     items = response['Items']
     return items

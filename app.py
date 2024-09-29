@@ -134,7 +134,6 @@ def create_yobikake():
 def get_yobikakes(child_id,kibun_timestamp):
     session = _login_check()
     child_id = unquote(child_id)
-
     return _changeListTimestamp("Atimestamp",database.get_yobikakesForKibun(child_id,kibun_timestamp,True))
 
 #自分への呼びかけのデータをとる
