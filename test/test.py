@@ -6,8 +6,7 @@ import datetime
 from decimal import *
 
 
-#dynamodb = boto3.resource('dynamodb', endpoint_url="http://127.0.0.1:8001")
-dynamodb = boto3.resource('dynamodb', endpoint_url="dynamodb.ap-northeast-3.amazonaws.com")
+dynamodb = boto3.resource('dynamodb')#, endpoint_url="http://127.0.0.1:8001")
 
 def _changeTimestamp(keyname,data):
     if keyname in data:

@@ -10,6 +10,10 @@ app = Chalice(app_name='hobopy-backend')
 app.debug = True
 app.api.cors = True
 
+@app.route('/test', methods=['GET'], cors=True)
+def test():
+    return ['Greetings','hello world']
+
 # loginする
 @app.route('/login', methods=['POST'], cors=True)
 def login_user():
