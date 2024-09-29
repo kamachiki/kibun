@@ -1,23 +1,5 @@
 {
-  "resources": [
-    {
-      "name": "api_handler_role",
-      "resource_type": "iam_role",
-      "role_arn": "arn:aws:iam::247737223781:role/kibun-prod-api_handler",
-      "role_name": "kibun-prod-api_handler"
-    },
-    {
-      "name": "api_handler",
-      "resource_type": "lambda_function",
-      "lambda_arn": "arn:aws:lambda:ap-northeast-3:247737223781:function:kibun-prod"
-    },
-    {
-      "name": "rest_api",
-      "resource_type": "rest_api",
-      "rest_api_id": "g6gzuefan7",
-      "rest_api_url": "https://g6gzuefan7.execute-api.ap-northeast-3.amazonaws.com/api/"
-    }
-  ],
+  "resources": [],
   "schema_version": "2.0",
   "backend": "api"
 }
