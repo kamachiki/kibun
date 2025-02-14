@@ -1,10 +1,18 @@
 # ここみる（kibun) インストール方法
 
+#ライブデモ
+インストール済みのものは
+https://y.knsn.cc/snap/snap.html#present:Username=tichan&ProjectName=kokomiru
+こちらから見ることができます。
+
 #　フロントエンドのインストール方法
 * https\://snap.berkeley.edu/snap/snap.html
 を開き、kokomiru.xmlを開く
 開いた画面でクリックすると始まります
 初期状態では、既にAWSにデプロイされたバックエンドと通信します。
+デモアカウントは
+子供：ID：ちきり　パスワード：おきほ
+大人：ID：あさこ　パスワード：たけあき
 
 * バックエンドを下記の方法で設定した場合、バックエンドのエンドポイントURLを、「初めの画面」のステージのスクリプトのURLに設定してください。
 
