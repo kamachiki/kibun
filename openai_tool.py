@@ -2,7 +2,7 @@ import openai
 
 # テキストが人を傷つける可能性があるか判定する
 # OpenAI クライアントの作成（APIキーを設定）
-openai_api_key = "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"
+openai_api_key = "sk-xxxxx"
 
 client = openai.OpenAI(api_key=openai_api_key)
 

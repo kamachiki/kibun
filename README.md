@@ -32,6 +32,7 @@ https://y.knsn.cc/snap/snap.html#present:Username=tichan&ProjectName=kokomiru
 java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar \ > -sharedDb -port 8001
 で起動する
 etc/create-table-local.sh を実行してテーブルを作る
+* openai_tool.pyファイルで、openai_api_keyを入れる
 * chalice deply --stage prod　でデプロイ
 * （又は）chalice local --stage prod でローカル展開
 
