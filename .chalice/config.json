@@ -24,7 +24,8 @@
         "tests/*",
         "docs/*",
         "etc/*",
-        "out/*"
+        "out/*",
+        "kokomiru.xml"
       ],
       "environment_variables": {
         "DB_TABLE_USER": "Users",

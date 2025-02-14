@@ -3,7 +3,7 @@ from chalicelib import database
 from datetime import datetime,timedelta
 from urllib.parse import unquote
 from functools import reduce
-from openai_tool  import is_hurtful_text,generate_response
+from chalicelib.openai_tool  import is_hurtful_text,generate_response   
 import re
 
 #chaliceのインスタンスを作成
