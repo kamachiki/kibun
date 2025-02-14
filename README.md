@@ -17,6 +17,7 @@
 * aws configureコマンドで上記を設定する
 * pip install chalice　でchaliceをインストールする
 * pip install boto3 でboto3をインストールする
+* pip install openai　でopenaiをインストールする
 * gh repo clone kamachiki/kibun　で展開
 * etc/create-table.shを実行して、テーブルを作る
 * （又は）https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html からアジアパシフィック（東京）リージョンのファイルをダウンロードする。

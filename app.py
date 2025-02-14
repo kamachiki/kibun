@@ -3,12 +3,15 @@ from chalicelib import database
 from datetime import datetime,timedelta
 from urllib.parse import unquote
 from functools import reduce
+from openai_tool  import is_hurtful_text,generate_response
+import re
 
-
-
+#chaliceのインスタンスを作成
 app = Chalice(app_name='hobopy-backend')
 app.debug = True
 app.api.cors = True
+
+
 
 @app.route('/test', methods=['GET'], cors=True)
 def test():
@@ -130,6 +133,23 @@ def delete_user(adult_id):
 def create_yobikake():
     kibun = app.current_request.json_body
     session = _login_check()   
+    if(is_hurtful_text( kibun['Ayobikake'])):
+        raise BadRequestError("hurtful text")
+    return _changeTimestamp("Atimestamp",database.create_yobikake(kibun,session["user"]["id"]))
+
+#よびかけのデータを作成する.コメント付き
+@app.route('/yobikakes_with_comment', methods=['POST'], cors=True)
+def create_yobikake_with_comment():
+    kibun = app.current_request.json_body
+    session = _login_check()   
+    if 'Agengo'in kibun:
+        gengo = kibun['Agengo']
+    else:
+        gengo = "Japanese"
+    if(is_hurtful_text(kibun['Ayobikake'],kibun['Agengo'])):
+        return "False"
+    else:
+        kibun['Aosusume'] = generate_response(kibun['Areason'], kibun['Ayobikake'],kibun['Agengo'])
     return _changeTimestamp("Atimestamp",database.create_yobikake(kibun,session["user"]["id"]))
 
 #子供への呼びかけのデータをとる
@@ -172,12 +192,14 @@ def get_goals(child_id,mae):
     child_id = unquote(child_id)
     session = _login_check()
     
-    if session['user']['Atype'] == 'adult' and _checkKodomoToOtona(child_id,session["user"]["id"]):
+    if session['user']['Atype'] == 'child' or _checkKodomoToOtona(child_id,session["user"]["id"]):
         now = datetime.now()
         ago = now - timedelta(days=int(mae))
         return _changeListTimestamp( "Atimestamp", database.get_goals(child_id,ago,now))
     else:
         return []
+    
+    
 
 #@app.route('/goals/{timestamp}', methods=['DELETE'], cors=True)
 #def delete_goals(timestamp):
@@ -188,6 +210,8 @@ def get_goals(child_id,mae):
 @app.route('/comments', methods=['POST'], cors=True)
 def create_comment():
     session = _login_check()   
+    if(is_hurtful_text( app.current_request.json_body['Acomment'])):
+        raise BadRequestError("hurtful text")
     return _changeTimestamp("Atimestamp", database.create_comment(app.current_request.json_body,session["user"]))
 
 #大人が子供へのコメントのデータをとる
@@ -284,3 +308,4 @@ def update_user():
     #if session['user']['Atype'] != 'adult':
     #    raise BadRequestError("adult only")
     #return database.delete_user(user_id)
+

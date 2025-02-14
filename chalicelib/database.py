@@ -142,7 +142,12 @@ def create_yobikake(yobikake_data,user_id):
         'Akibun':yobikake_data['Akibun'],
         'Akokai':yobikake_data['Akokai'],
         'Areason':yobikake_data['Areason'],
+        'Aosusume':yobikake_data['Aosusume']
+        #,
+
+        #'Alanguage':yobikake_data['Alanguage']
     }
+    #raise(ValueError(item))
     table = _get_database().Table(os.environ['DB_TABLE_YOBIKAKE'])
     table.put_item(Item=item)
     return item 
@@ -177,7 +182,8 @@ def create_comment(comment,adult_id):
         'Atimestamp':int(datetime.now().timestamp()),
         'Achild_id':comment['Achild_id'],
         'Aadult_id':adult_id,
-        'Acomment':html.escape(comment['Acomment'])
+        'Acomment':html.escape(comment['Acomment'])#,
+        #'Alanguage':comment['Alanguage']
     }
     table = _get_database().Table(os.environ['DB_TABLE_COMMENT'])
     table.put_item(Item=item)

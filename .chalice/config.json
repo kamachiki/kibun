@@ -18,6 +18,14 @@
     },
     "prod": {
       "autogen_policy": false,
+      "package_excludes": [
+        "*.pyc",
+        "__pycache__",
+        "tests/*",
+        "docs/*",
+        "etc/*",
+        "out/*"
+      ],
       "environment_variables": {
         "DB_TABLE_USER": "Users",
         "DB_TABLE_USER_SESSION": "User_Session",

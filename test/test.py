@@ -6,7 +6,7 @@ import datetime
 from decimal import *
 
 
-dynamodb = boto3.resource('dynamodb')#, endpoint_url="http://127.0.0.1:8001")
+dynamodb = boto3.resource('dynamodb', endpoint_url="http://127.0.0.1:8001")
 
 def _changeTimestamp(keyname,data):
     if keyname in data:
@@ -58,6 +58,7 @@ save_dynamodb_table_to_csv("Users","user.csv")
 save_dynamodb_table_to_csv("Comment","comment.csv")
 
 save_dynamodb_table_to_csv("Kibun","kibun.csv")
+"""
 table = dynamodb.Table("Yobikake")
 keyp =Key("Ayobikakerareru").eq("ちいちゃん") #& Key('Atimestamp').between(Decimal(str(1726827119.491559)), Decimal(str(1726927119.491559)))
 fe =Attr("Akibun_timestamp").eq("1727483414")
@@ -66,5 +67,6 @@ response = table.query(KeyConditionExpression = keyp,FilterExpression=fe)
 data = response['Items']
 write_csv("yobikake_between.csv",data,"Yobikake")
 
+"""
 
 print("全て終了")
